@@ -10,6 +10,7 @@
   }
 
   .mobile-nav-btn {
+    position: fixed;
     width: 48px;
     height: 48px;
     border-radius: 16px;
@@ -27,7 +28,6 @@
   }
 
   .mobile-nav-btn--back {
-    position: fixed;
     background: var(--color-secondary, #10b981);
     color: white;
   }
@@ -43,16 +43,18 @@
   }
 
   .mobile-nav-btn--top {
-    position: fixed;
-    right: 16px;
-    bottom: 24px;
     background: var(--color-primary);
     color: white;
   }
 
   .mobile-nav-btn--top:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+    transform: scale(1.05);
+  }
+
+  .mobile-nav-btn--top.dragging {
+    cursor: grabbing;
+    transform: scale(1.1);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5);
   }
 
   .mobile-nav-btn:active {

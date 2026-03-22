@@ -21,6 +21,7 @@ const changelogEn = [
     changes: [
       { type: 'feature', text: 'Back to top button' },
       { type: 'feature', text: 'Draggable back button on mobile' },
+      { type: 'feature', text: 'Draggable top button on mobile' },
       { type: 'feature', text: 'Changelog page' },
     ]
   }
@@ -47,6 +48,7 @@ const changelogZh = [
     changes: [
       { type: 'feature', text: '回到顶部按钮' },
       { type: 'feature', text: '移动端可拖拽返回按钮' },
+      { type: 'feature', text: '移动端可拖拽回到顶部按钮' },
       { type: 'feature', text: '更新日志页面' },
     ]
   }

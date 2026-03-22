@@ -3,11 +3,15 @@ import './BackToTop.css';
 
 export function BackToTop({ hasBack, onBack }) {
   const [showTop, setShowTop] = useState(false);
-  const [position, setPosition] = useState(() => {
+  const [backPosition, setBackPosition] = useState(() => {
     const saved = localStorage.getItem('back-btn-position');
     return saved ? JSON.parse(saved) : { x: null, y: null };
   });
-  const [isDragging, setIsDragging] = useState(false);
+  const [topPosition, setTopPosition] = useState(() => {
+    const saved = localStorage.getItem('top-btn-position');
+    return saved ? JSON.parse(saved) : { x: null, y: null };
+  });
+  const [isDragging, setIsDragging] = useState(null);
   const dragRef = useRef({ startX: 0, startY: 0, initialX: 0, initialY: 0 });
 
   useEffect(() => {
@@ -19,21 +23,28 @@ export function BackToTop({ hasBack, onBack }) {
     return () => window.removeEventListener('scroll', toggleVisible);
   }, []);
 
-  const savePosition = useCallback((x, y) => {
+  const saveBackPosition = useCallback((x, y) => {
     const newPos = { x, y };
-    setPosition(newPos);
+    setBackPosition(newPos);
     localStorage.setItem('back-btn-position', JSON.stringify(newPos));
   }, []);
 
-  const handleDragStart = (e) => {
-    setIsDragging(true);
+  const saveTopPosition = useCallback((x, y) => {
+    const newPos = { x, y };
+    setTopPosition(newPos);
+    localStorage.setItem('top-btn-position', JSON.stringify(newPos));
+  }, []);
+
+  const handleDragStart = (e, btn) => {
+    setIsDragging(btn);
     const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
     const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+    const pos = btn === 'back' ? backPosition : topPosition;
     dragRef.current = {
       startX: clientX,
       startY: clientY,
-      initialX: position.x ?? (window.innerWidth - 70),
-      initialY: position.y ?? (window.innerHeight - 150)
+      initialX: pos.x ?? (btn === 'back' ? 16 : 70),
+      initialY: pos.y ?? (btn === 'back' ? 100 : 100)
     };
   };
 
@@ -48,36 +59,45 @@ export function BackToTop({ hasBack, onBack }) {
     const newX = Math.max(0, Math.min(window.innerWidth - 50, dragRef.current.initialX - deltaX));
     const newY = Math.max(0, Math.min(window.innerHeight - 150, dragRef.current.initialY - deltaY));
 
-    savePosition(newX, newY);
+    if (isDragging === 'back') {
+      saveBackPosition(newX, newY);
+    } else {
+      saveTopPosition(newX, newY);
+    }
   };
 
   const handleDragEnd = () => {
-    setIsDragging(false);
+    setIsDragging(null);
   };
 
   const scrollToTop = () => {
+    if (isDragging) return;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   if (!hasBack && !showTop) return null;
 
-  const rightPos = position.x !== null ? position.x : 16;
-  const bottomPos = position.y !== null ? position.y : 100;
+  const backRight = backPosition.x !== null ? backPosition.x : 16;
+  const backBottom = backPosition.y !== null ? backPosition.y : 100;
+  const topRight = topPosition.x !== null ? topPosition.x : 70;
+  const topBottom = topPosition.y !== null ? topPosition.y : 100;
 
   return (
-    <div className="mobile-nav-buttons">
+    <div
+      className="mobile-nav-buttons"
+      onMouseMove={handleDrag}
+      onMouseUp={handleDragEnd}
+      onMouseLeave={handleDragEnd}
+      onTouchMove={handleDrag}
+      onTouchEnd={handleDragEnd}
+    >
       {hasBack && (
         <button
-          className={`mobile-nav-btn mobile-nav-btn--back ${isDragging ? 'dragging' : ''}`}
-          style={{ right: rightPos, bottom: bottomPos }}
-          onClick={onBack}
-          onMouseDown={handleDragStart}
-          onMouseMove={handleDrag}
-          onMouseUp={handleDragEnd}
-          onMouseLeave={handleDragEnd}
-          onTouchStart={handleDragStart}
-          onTouchMove={handleDrag}
-          onTouchEnd={handleDragEnd}
+          className={`mobile-nav-btn mobile-nav-btn--back ${isDragging === 'back' ? 'dragging' : ''}`}
+          style={{ right: backRight, bottom: backBottom }}
+          onClick={isDragging ? undefined : onBack}
+          onMouseDown={(e) => handleDragStart(e, 'back')}
+          onTouchStart={(e) => handleDragStart(e, 'back')}
           aria-label="Go back"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -87,8 +107,11 @@ export function BackToTop({ hasBack, onBack }) {
       )}
       {showTop && (
         <button
-          className="mobile-nav-btn mobile-nav-btn--top"
-          onClick={scrollToTop}
+          className={`mobile-nav-btn mobile-nav-btn--top ${isDragging === 'top' ? 'dragging' : ''}`}
+          style={{ right: topRight, bottom: topBottom }}
+          onClick={isDragging ? undefined : scrollToTop}
+          onMouseDown={(e) => handleDragStart(e, 'top')}
+          onTouchStart={(e) => handleDragStart(e, 'top')}
           aria-label="Back to top"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
