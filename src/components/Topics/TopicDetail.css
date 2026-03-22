@@ -37,6 +37,61 @@
   border-bottom: 1px solid var(--color-border);
 }
 
+.topic-detail__intro p,
+.topic-detail__section-content p {
+  margin-bottom: var(--space-md);
+  line-height: 1.8;
+}
+
+.topic-detail__intro h2,
+.topic-detail__section-content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: var(--space-xl) 0 var(--space-md);
+  color: var(--color-text);
+}
+
+.topic-detail__intro h3,
+.topic-detail__section-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: var(--space-lg) 0 var(--space-sm);
+  color: var(--color-text);
+}
+
+.topic-detail__intro strong,
+.topic-detail__section-content strong {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.topic-detail__intro code,
+.topic-detail__section-content code {
+  background: var(--color-background);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+  font-size: 0.875em;
+}
+
+.topic-detail__intro pre,
+.topic-detail__section-content pre {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin: var(--space-md) 0;
+  overflow-x: auto;
+}
+
+.topic-detail__intro pre code,
+.topic-detail__section-content pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
 .topic-detail__list {
   margin: var(--space-md) 0;
   padding-left: var(--space-lg);
@@ -133,6 +188,16 @@
 .topic-detail__code code {
   display: block;
   white-space: pre;
+}
+
+/* Styles for section content rendered from markdown */
+.topic-detail__section-content {
+  color: var(--color-text);
+  line-height: 1.7;
+}
+
+.topic-detail__section-content > *:first-child {
+  margin-top: 0;
 }
 
 @media (max-width: 768px) {
