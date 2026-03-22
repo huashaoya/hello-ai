@@ -1,0 +1,26 @@
+.section {
+  margin-bottom: var(--space-xl);
+}
+
+.section__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.section__content {
+  color: var(--color-text);
+  line-height: 1.7;
+}
+
+.section__content p {
+  margin-bottom: var(--space-md);
+}
+
+.section__content strong {
+  color: var(--color-primary);
+  font-weight: 600;
+}

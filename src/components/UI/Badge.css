@@ -1,0 +1,59 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-lg);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.badge--sm {
+  padding: 2px 6px;
+  font-size: 0.625rem;
+}
+
+.badge--md {
+  padding: var(--space-xs) var(--space-sm);
+  font-size: 0.75rem;
+}
+
+.badge--lg {
+  padding: var(--space-sm) var(--space-md);
+  font-size: 0.875rem;
+}
+
+.badge[data-category="fundamentals"] {
+  background: rgba(139, 92, 246, 0.1);
+  color: var(--color-fundamentals);
+}
+
+.badge[data-category="ml"] {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--color-ml);
+}
+
+.badge[data-category="deep-learning"] {
+  background: rgba(236, 72, 153, 0.1);
+  color: var(--color-deep-learning);
+}
+
+.badge[data-category="nlp"] {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--color-nlp);
+}
+
+.badge[data-category="vision"] {
+  background: rgba(20, 184, 166, 0.1);
+  color: var(--color-vision);
+}
+
+.badge[data-category="applications"] {
+  background: rgba(249, 115, 22, 0.1);
+  color: var(--color-applications);
+}
+
+.badge__icon {
+  font-size: 0.875em;
+}
