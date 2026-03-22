@@ -1,7 +1,7 @@
 import { Button } from '../UI/Button';
 import './Header.css';
 
-export function Header({ onLogoClick, lang, onToggleLang, isDark, onToggleDark, searchQuery, onSearchChange }) {
+export function Header({ onLogoClick, lang, onToggleLang, isDark, onToggleDark, searchQuery, onSearchChange, onChangelogClick }) {
   return (
     <header className="header">
       <div className="header__inner">
@@ -34,6 +34,9 @@ export function Header({ onLogoClick, lang, onToggleLang, isDark, onToggleDark, 
           </Button>
           <Button variant="secondary" size="sm" onClick={onLogoClick}>
             {lang === 'zh' ? '首页' : 'Home'}
+          </Button>
+          <Button variant="secondary" size="sm" onClick={onChangelogClick}>
+            {lang === 'zh' ? '日志' : 'Log'}
           </Button>
         </nav>
       </div>

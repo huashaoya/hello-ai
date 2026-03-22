@@ -6,9 +6,11 @@ import './styles/pages.css';
 import { Header } from './components/Layout/Header';
 import { Sidebar } from './components/Layout/Sidebar';
 import { Footer } from './components/Layout/Footer';
+import { BackToTop } from './components/UI/BackToTop';
 import { Home } from './pages/Home';
 import { TopicPage } from './pages/TopicPage';
 import { CategoryPage } from './pages/CategoryPage';
+import { ChangelogPage } from './pages/ChangelogPage';
 import { useDarkMode } from './hooks/useDarkMode';
 import { getTopics } from './data/topics';
 
@@ -64,6 +66,9 @@ function App() {
       if (prev.selectedCategory) {
         return { ...prev, currentPage: 'home', selectedCategory: null };
       }
+      if (prev.currentPage === 'changelog') {
+        return { ...prev, currentPage: 'home' };
+      }
       return prev;
     });
   }, []);
@@ -90,6 +95,17 @@ function App() {
     }
   };
 
+  const goToChangelog = useCallback(() => {
+    setState(prev => ({
+      ...prev,
+      currentPage: 'changelog',
+      selectedTopic: null,
+      selectedCategory: null,
+      currentTopicCategory: null
+    }));
+    setSidebarOpen(false);
+  }, []);
+
   const renderPage = () => {
     switch (state.currentPage) {
       case 'topic':
@@ -110,6 +126,8 @@ function App() {
             lang={lang}
           />
         );
+      case 'changelog':
+        return <ChangelogPage lang={lang} />;
       default:
         return <Home onTopicClick={handleTopicClick} lang={lang} searchQuery={searchQuery} />;
     }
@@ -125,6 +143,7 @@ function App() {
         onToggleDark={toggleDarkMode}
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
+        onChangelogClick={goToChangelog}
       />
 
       {/* Mobile menu button */}
@@ -157,6 +176,7 @@ function App() {
         </div>
         <Footer lang={lang} />
       </main>
+      <BackToTop hasBack={state.currentPage !== 'home'} onBack={goBack} />
     </div>
   );
 }
