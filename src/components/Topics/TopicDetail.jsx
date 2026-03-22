@@ -14,6 +14,12 @@ export function TopicDetail({ topicId, onBack, onTopicClick, lang }) {
     .filter(Boolean);
 
   const renderParagraph = (paragraph, index) => {
+    // Handle code blocks
+    if (paragraph.startsWith('```')) {
+      const code = paragraph.replace(/^```\w*\n?/, '').replace(/\n?```$/, '');
+      return <pre key={index} className="topic-detail__code"><code>{code}</code></pre>;
+    }
+
     if (paragraph.startsWith('•') || paragraph.startsWith('**')) {
       const lines = paragraph.split('\n').filter(l => l.trim());
       return (
@@ -47,6 +53,33 @@ export function TopicDetail({ topicId, onBack, onTopicClick, lang }) {
     );
   };
 
+  const renderSection = (content) => {
+    // Split content by code blocks while preserving them
+    const parts = [];
+    const codeBlockRegex = /```[\s\S]*?```/g;
+    let lastIndex = 0;
+    let match;
+
+    while ((match = codeBlockRegex.exec(content)) !== null) {
+      // Add text before the code block
+      if (match.index > lastIndex) {
+        const text = content.slice(lastIndex, match.index);
+        parts.push(...text.split('\n\n').filter(p => p.trim()));
+      }
+      // Add the code block
+      parts.push(match[0]);
+      lastIndex = match.index + match[0].length;
+    }
+
+    // Add remaining text
+    if (lastIndex < content.length) {
+      const text = content.slice(lastIndex);
+      parts.push(...text.split('\n\n').filter(p => p.trim()));
+    }
+
+    return parts.map((para, i) => renderParagraph(para, i));
+  };
+
   return (
     <article className="topic-detail">
       <header className="topic-detail__header">
@@ -65,7 +98,7 @@ export function TopicDetail({ topicId, onBack, onTopicClick, lang }) {
 
       {topic.content.sections.map((section, index) => (
         <Section key={index} title={section.title}>
-          {section.content.split('\n\n').map((para, i) => renderParagraph(para, i))}
+          {renderSection(section.content)}
         </Section>
       ))}
 

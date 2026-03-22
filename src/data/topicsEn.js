@@ -37,6 +37,51 @@ This is why token counts often exceed word counts when processing English text.`
 • Subword efficiency: "unhappiness" → ["un", "happy", "ness"] instead of one rare word`
         },
         {
+          title: 'Chinese Tokenization Example: jieba',
+          content: `jieba is the most popular Chinese text segmentation library, supporting multiple segmentation modes:
+
+**Accurate Mode** (default):
+\`\`\`python
+import jieba
+text = "人工智能是当今最热门的技术之一"
+result = jieba.lcut(text)
+print(result)
+# Output: ['人工智能', '是', '当今', '最', '热门', '的', '技术', '之一']
+\`\`\`
+
+**Full Mode** - Lists all possible words:
+\`\`\`python
+result = jieba.lcut(text, cut_all=True)
+print(result)
+# Output: ['人工智能', '人工', '智能', '是', '当今', '最', '热门', '热门', '的', '技术', '之一', '之', '一']
+\`\`\`
+
+**Search Engine Mode** - Suitable for search engines:
+\`\`\`python
+text = "人工智能技术在各个领域广泛应用"
+result = jieba.cut_for_search(text)
+print(list(result))
+# Output: ['人工智能', '人工', '智能', '技术', '应用', '各个', '领域', '广泛', '应用']
+\`\`\`
+
+**Part-of-Speech Tagging**:
+\`\`\`python
+import jieba.posseg as pseg
+words = pseg.cut("我喜欢深度学习")
+for word, flag in words:
+    print(f"{word} / {flag}")
+# Output: 我/r 喜欢/v 深度/n 学习/vn
+\`\`\`
+
+**Adding Custom Words**:
+\`\`\`python
+jieba.add_word("大语言模型")
+jieba.add_word("自然语言处理")
+\`\`\`
+
+jieba uses a prefix dictionary for efficient segmentation and HMM model to handle unknown words, making it a great starting tool for Chinese NLP.`
+        },
+        {
           title: 'Tokens and Model Limits',
           content: `Every LLM has a maximum context window measured in tokens:
 

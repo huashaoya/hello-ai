@@ -37,6 +37,51 @@ export const topicsZh = [
 • 子词效率："unhappiness" → ["un", "happy", "ness"]，而不是一个罕见词`
         },
         {
+          title: '中文分词示例：jieba',
+          content: `jieba（结巴分词）是最流行的中文分词库，支持多种分词模式：
+
+**精确模式**（默认）：
+\`\`\`python
+import jieba
+text = "人工智能是当今最热门的技术之一"
+result = jieba.lcut(text)
+print(result)
+# 输出：['人工智能', '是', '当今', '最', '热门', '的', '技术', '之一']
+\`\`\`
+
+**全模式** - 列出所有可能的词：
+\`\`\`python
+result = jieba.lcut(text, cut_all=True)
+print(result)
+# 输出：['人工智能', '人工', '智能', '是', '当今', '最', '热门', '热门', '的', '技术', '之一', '之', '一']
+\`\`\`
+
+**搜索引擎模式** - 适合搜索引擎：
+\`\`\`python
+text = "人工智能技术在各个领域广泛应用"
+result = jieba.cut_for_search(text)
+print(list(result))
+# 输出：['人工智能', '人工', '智能', '技术', '应用', '各个', '领域', '广泛', '应用']
+\`\`\`
+
+**词性标注**：
+\`\`\`python
+import jieba.posseg as pseg
+words = pseg.cut("我喜欢深度学习")
+for word, flag in words:
+    print(f"{word} / {flag}")
+# 输出：我/r 喜欢/v 深度/n 学习/vn
+\`\`\`
+
+**添加自定义词汇**：
+\`\`\`python
+jieba.add_word("大语言模型")
+jieba.add_word("自然语言处理")
+\`\`\`
+
+jieba使用前缀词典实现高效分词，结合HMM模型处理未登录词，是中文NLP的入门利器。`
+        },
+        {
           title: 'Token与模型限制',
           content: `每个LLM都有以token计的最大上下文窗口：
 
